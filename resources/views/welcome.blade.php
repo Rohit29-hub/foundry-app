@@ -481,7 +481,7 @@
                                     </div>
                                     <div class="grid gap-3" style="max-height:125px !important; overflow-y: scroll">
 
-                                        @foreach($station->jobs as $job)
+                                        @foreach($station->jobs->sortByDesc('created_at') as $job)
                                             <div class="flex items-center justify-between flex-wrap gap-2">
                                                 <div class="flex items-center gap-1.5">
                                                     <span class="badge badge-dot size-2" style="color:#FFF; background-color: #{{$job->client->color_code}}"></span>

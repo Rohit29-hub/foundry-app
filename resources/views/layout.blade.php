@@ -14,7 +14,7 @@
     <link href="assets/css/styles.css" rel="stylesheet"/>
 
 </head>
-<body class="antialiased flex h-full text-base text-gray-700 [--tw-page-bg:var(--tw-light)] [--tw-page-bg-dark:var(--tw-coal-500)] [--tw-header-height-default:100px] [[data-sticky-header=on]&amp;]:[--tw-header-height:60px] [--tw-header-height:--tw-header-height-default] bg-[--tw-page-bg] dark:bg-[--tw-page-bg-dark]">
+<body class="antialiased flex h-full text-base text-gray-700 [--tw-page-bg:var(--tw-light)] [--tw-page-bg-dark:var(--tw-coal-500)] [--tw-header-height-default:100px] [[data-sticky-header=on]&amp;]:[--tw-header-height:60px] [--tw-header-height:--tw-header-height-default] bg-[--tw-page-bg]">
 <!-- Theme Mode -->
 <script>
     const defaultThemeMode = 'light'; // light|dark|system
@@ -41,14 +41,14 @@
 <!-- Main -->
 <div class="flex grow flex-col [[data-sticky-header=on]_&amp;]:pt-[--tw-header-height-default]">
     <!-- Header -->
-    {{--    <header class="flex items-center transition-[height] shrink-0 bg-[--tw-page-bg] dark:bg-[--tw-page-bg-dark] h-[--tw-header-height]" data-sticky="true" data-sticky-class="transition-[height] fixed z-10 top-0 left-0 right-0 shadow-sm backdrop-blur-md bg-white/70 dark:bg-coal-500/70 dark:border-b dark:border-b-coal-100" data-sticky-name="header" data-sticky-offset="200px" id="header">--}}
+    {{--    <header class="flex items-center transition-[height] shrink-0 bg-[--tw-page-bg] h-[--tw-header-height]" data-sticky="true" data-sticky-class="transition-[height] fixed z-10 top-0 left-0 right-0 shadow-sm backdrop-blur-md bg-white/70" data-sticky-name="header" data-sticky-offset="200px" id="header">--}}
     {{--        <!-- Container -->--}}
     {{--        <div class="container-fixed flex justify-between items-center lg:gap-4" id="header_container">--}}
     {{--            <!-- Logo -->--}}
     {{--            <div class="flex items-center gap-2 lg:gap-5 2xl:-ml-[60px]">--}}
     {{--                <a href="/">--}}
     {{--                    <img class="dark:hidden min-h-[42px]" src="logo.png"/>--}}
-    {{--                    <img class="hidden dark:inline-block min-h-[42px]" src="logo.png"/>--}}
+    {{--                    <img class="hidden min-h-[42px]" src="logo.png"/>--}}
     {{--                </a>--}}
     {{--                <div class="flex items-center">--}}
     {{--                    <h3 class="text-gray-700 text-base hidden md:block">--}}
@@ -1944,9 +1944,13 @@
                 </div>
             </div>
             <div class="flex items-center text-2sm text-gray-800 gap-5 lg:pb-4">
-                <a class="hover:text-primary" href="#">
-                    Log Out
-                </a>
+                <form method="POST" action="{{ route('logout') }}">
+            @csrf
+
+            <button type="submit" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                {{ __('Log Out') }}
+            </button>
+        </form>
                 {{--                <a class="hover:text-primary" href="#">--}}
                 {{--                    User Guides--}}
                 {{--                </a>--}}

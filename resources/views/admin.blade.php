@@ -16,7 +16,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($station->jobs as $job)
+                @foreach($station->jobs->sortByDesc('created_at') as $job)
                 <tr data-job-id="{{ $job->id }}" data-job-progress="{{ $job->progress }}" class="job-row cursor-pointer">
                     <td>
                         <div class="d-flex align-items-center gap-2">

@@ -20,9 +20,10 @@ class AdminController extends Controller
             ]);
             
             $job = Job::findOrFail($id); // Use findOrFail to throw an exception if not found
-            
+            dd($job);
             // Update job progress
             $job->progress = $request->input('progress');
+            $job->station_id = $request->input('station_id');
             $job->save();
 
             // Store the comment
@@ -36,6 +37,29 @@ class AdminController extends Controller
         } catch (Exception $e) {
             Log::error('Failed to update progress: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Failed to update progress.');
+        }
+    }
+    public function updateStation(Request $request, $id)
+    {
+        try {
+            // Validate the request data
+            $request->validate([
+                'station_id' => 'required|integer|exists:stations,id',
+            ]);
+
+            // Find the job or throw a 404 exception
+            $job = Job::findOrFail($id);
+
+            // Update the job's station_id
+            $job->station_id = $request->input('station_id');
+            $job->save();
+
+            return redirect()->back()->with('success', 'Station updated successfully!');
+        }  
+         catch (\Exception $e) {
+            // Handle general exceptions
+            Log::error('Failed to update station: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to update station.');
         }
     }
 

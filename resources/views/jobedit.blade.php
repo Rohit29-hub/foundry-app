@@ -56,6 +56,24 @@
             <div id="form-container" class="d-none p-3 bg-light border rounded">
                 <!-- Forms will be dynamically injected here -->
             </div>
+
+            <div class="mt-3">
+            <h1 class="h4 mb-3">Move to Station : </h1>
+
+            <div class="d-flex justify-content-start gap-3 mb-4 flex-wrap">
+    @foreach($stations as $station)
+    <form method="POST"  action="{{ url('/manager/job/' . $job->id . '/update-station') }}">
+        @csrf
+        <input type="hidden" name="station_id" value="{{ $station->id }}">
+        <button type="submit" class="btn btn-outline-primary text-nowrap">
+            {{ $station->title }} <!-- Assuming you want to display the station title on the button -->
+        </button>
+    </form>
+@endforeach
+
+</div>
+
+            </div>
         </div>
 
         <!-- Fixed Comments Section -->
@@ -127,14 +145,17 @@ document.addEventListener('DOMContentLoaded', function() {
                                 onchange="updateProgressValue()"
                                 style="flex: 1;"
                             >
-                            <span id="progress-value" class="ms-2">${jobProgress}</span>
+                            <span id="progress-value" class="ms-2 fw-bold">${jobProgress}</span>
+                            <button type="submit" class="btn btn-success">Update</button>
                         </div>
+                        
                     </div>
+                    
+                    
                     <div class="mb-3">
                         <label for="notes" class="form-label">Notes <span class='text-danger'>*</span></label>
                         <textarea name="comment" rows="3" class="form-control" required></textarea>
                     </div>
-                    <button type="submit" class="btn btn-success">Save Progress</button>
                 </form>
             `;
         } else if (selectedButton === 'report-issue') {

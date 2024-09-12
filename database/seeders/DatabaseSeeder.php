@@ -7,6 +7,7 @@ use App\Models\Job;
 use App\Models\Station;
 use App\Models\User;
 use App\Models\Jobcomment;
+use App\Models\Order;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -39,21 +40,30 @@ class DatabaseSeeder extends Seeder
 //        $titagarh = Client::create(['title'=>'Titagarh','color_code'=>'723AEA']);
 //        $jindal = Client::create(['title'=>'Jindal','color_code'=>'1A84FF']);
 
-        $station1 = Station::create(['title'=>'Deposition']);
-        $station2 = Station::create(['title'=>'Lithography']);
-        $station3 = Station::create(['title'=>'Etching']);
-        $station4 = Station::create(['title'=>'Packaging']);
+        $station1 = Station::create(['title'=>'Deposition','time_duration'=> 1.8]);
+        $station2 = Station::create(['title'=>'Lithography','time_duration'=> 1.2]);
+        $station3 = Station::create(['title'=>'Etching','time_duration'=> 1.4]);
+        $station4 = Station::create(['title'=>'Packaging','time_duration'=> 1.6]);
+
+        
 
 //        $station1 = Station::create(['title'=>'Frame Assembly']);
 //        $station2 = Station::create(['title'=>'Body Assembly']);
 //        $station3 = Station::create(['title'=>'Surface Treatment']);
 //        $station4 = Station::create(['title'=>'Final Assembly']);
 //
-        $ir_order1 = $ir->orders()->create();
-        $srbwipl_order1 = $srbwipl->orders()->create();
-        $concor_order1 = $concor->orders()->create();
-        $titagarh_order1 = $titagarh->orders()->create();
-        $jindal_order1 = $jindal->orders()->create();
+        // $ir_order1 = $ir->orders()->create();
+        // $srbwipl_order1 = $srbwipl->orders()->create();
+        // $concor_order1 = $concor->orders()->create();
+        // $titagarh_order1 = $titagarh->orders()->create();
+        // $jindal_order1 = $jindal->orders()->create();
+
+        $ir_order1 = Order::create(['order_number' => 'IR001', 'item_name' => 'IR Item 1', 'quantity' => 10 , 'client_id'=> $ir->id]);
+        $srbwipl_order1 = Order::create(['order_number' => 'SRB001', 'item_name' => 'SRB Item 1', 'quantity' => 15,'client_id'=> $srbwipl->id]);
+        $concor_order1 = Order::create(['order_number' => 'CON001', 'item_name' => 'CON Item 1', 'quantity' => 20,'client_id'=> $concor->id]);
+        $titagarh_order1 = Order::create(['order_number' => 'TIT001', 'item_name' => 'TIT Item 1', 'quantity' => 25,'client_id'=> $titagarh->id]);
+        $jindal_order1 = Order::create(['order_number' => 'JIN001', 'item_name' => 'JIN Item 1', 'quantity' => 30,'client_id'=> $jindal->id]);
+
 
 
 //        Job::create(['title'=>'SRB572','order_id'=>$srbwipl_order1->id,'station_id'=>$station1->id,'progress'=>80,'due_date'=>now()->addMinutes(rand(15,35))]);

@@ -17,5 +17,9 @@ class Order extends Model
     {
         return $this->hasMany(Job::class);
     }
+    public function items()
+{
+    return $this->hasMany(Item::class);
+}
 
 }
