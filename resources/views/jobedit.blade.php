@@ -31,6 +31,7 @@
                     <thead>
                         <tr>
                             <th>Job Title</th>
+                            <th>Job Quantity</th>
                             <th>Due Date</th>
                         </tr>
                     </thead>
@@ -46,6 +47,7 @@
                                     </a>
                                 </div>
                             </td>
+                            <td>{{ $job->quantity }}</td>
                             <td>{{ $job->due_date ? $job->due_date->diffForHumans() : 'No due date' }}</td>
                         </tr>
                     </tbody>
@@ -53,27 +55,11 @@
             </div>
 
             <!-- Form for Job Actions -->
-            <div id="form-container" class="d-none p-3 bg-light border rounded">
+            <div id="form-container" class="d-none p-3 border rounded">
                 <!-- Forms will be dynamically injected here -->
             </div>
 
-            <div class="mt-3">
-            <h1 class="h4 mb-3">Move to Station : </h1>
-
-            <div class="d-flex justify-content-start gap-3 mb-4 flex-wrap">
-    @foreach($stations as $station)
-    <form method="POST"  action="{{ url('/manager/job/' . $job->id . '/update-station') }}">
-        @csrf
-        <input type="hidden" name="station_id" value="{{ $station->id }}">
-        <button type="submit" class="btn btn-outline-primary text-nowrap">
-            {{ $station->title }} <!-- Assuming you want to display the station title on the button -->
-        </button>
-    </form>
-@endforeach
-
-</div>
-
-            </div>
+            
         </div>
 
         <!-- Fixed Comments Section -->
@@ -129,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Inject the appropriate form based on the selected button
         if (selectedButton === 'edit-progress') {
             formContainer.innerHTML = `
-                <form method="POST" action="{{ url('/manager/job/${jobId}/update-progress') }}">
+                <form id="update-progress-form" method="POST" action="{{ url('/manager/job/${jobId}/update-progress') }}">
                     @csrf
                     <div class="mb-3">
                         <label for="progress" class="form-label">Progress</label>
@@ -146,11 +132,10 @@ document.addEventListener('DOMContentLoaded', function() {
                                 style="flex: 1;"
                             >
                             <span id="progress-value" class="ms-2 fw-bold">${jobProgress}</span>
-                            <button type="submit" class="btn btn-success">Update</button>
+                             <span id="suggested-quantity" class="ms-2 text-muted"></span>
+                            <button type="submit" class="btn btn-success" id="update-progress-button">Update</button>
                         </div>
-                        
                     </div>
-                    
                     
                     <div class="mb-3">
                         <label for="notes" class="form-label">Notes <span class='text-danger'>*</span></label>
@@ -195,12 +180,13 @@ document.addEventListener('DOMContentLoaded', function() {
         button.classList.add('text-white');
     }
 
-    window.updateProgressValue = function() {
+   window.updateProgressValue = function() {
         const progressSlider = document.getElementById('progress-slider');
         const progressValue = document.getElementById('progress-value');
+        
 
         // Prevent slider from moving below the jobProgress value
-        if (progressSlider&& progressSlider.value < jobProgress) {
+        if (progressSlider && progressSlider.value < jobProgress) {
             progressSlider.value = jobProgress;
         }
 
@@ -208,6 +194,18 @@ document.addEventListener('DOMContentLoaded', function() {
             progressValue.textContent = progressSlider.value;
         } else {
             console.error('Progress slider or value span not found.');
+        }
+
+        // Show confirmation if progress is set to 100%
+        const form = document.getElementById('update-progress-form');
+        if (form) {
+            form.addEventListener('submit', function(event) {
+                if (progressSlider.value == 100) {
+                    if (!confirm('You have marked the progress as 100%. Do you want to complete the job and move it to the next station?')) {
+                        event.preventDefault(); // Prevent form submission if user cancels
+                    }
+                }
+            });
         }
     }
 });

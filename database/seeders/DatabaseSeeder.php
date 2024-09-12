@@ -21,9 +21,10 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         User::create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password'=>bcrypt('password')
+            'name' => 'Manager',
+            'email' => 'manager@example.com',
+            'password'=>bcrypt('password'),
+            'role' => 'manager1'
         ]);
 
         $ir = Client::create(['title'=>'Diodes','color_code'=>'F8285B']);

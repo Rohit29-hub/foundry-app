@@ -6,6 +6,7 @@ use App\Models\Station;
 use App\Models\Job;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\OrderController;
+use Illuminate\Support\Facades\Auth;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -71,14 +72,19 @@ Route::middleware('auth')->group(function () {
     Route::post('/manager/job/{id}/mark-late', [AdminController::class, 'markLate'])->name('admin.job.markLate');
     Route::post('/manager/job/{id}/mark-resolved', [AdminController::class, 'markResolved'])->name('admin.job.markResolved');
     
-    Route::get('/manager', function () {
-        $station = Station::with('jobs')->find(1);
+    Route::get('/manager/{id}', function ($id) {
+        $user = Auth::user(); // Get the authenticated user
+
+        // Check if the user is authenticated, has a role of 'manager', and matches the provided ID
+        if ($user->role === "manager".$id) {
+            $station = Station::with('jobs')->find($id);
     
-        if (!$station) {
-            abort(404, 'Station not found.');
+            if (!$station) {
+                abort(404, 'Station not found.');
+            }
+    
+            return view('admin', compact('station'));
         }
-    
-        return view('admin', compact('station'));
     });
 });
 

@@ -20,25 +20,41 @@ class AdminController extends Controller
             ]);
             
             $job = Job::findOrFail($id); // Use findOrFail to throw an exception if not found
-            dd($job);
+            
             // Update job progress
             $job->progress = $request->input('progress');
-            $job->station_id = $request->input('station_id');
+            
+            // Check if the progress is 100
+            if ($job->progress == 100) {
+                
+                // Increment sation_id by 1, but cap it at 4
+                if ($job->station_id < 4) {
+                    $job->station_id += 1;
+                
+                } else {
+                    // You can choose to set it to a specific value or leave it as 4 if it should not go beyond 4
+                    $job->station_id = 4;
+                }
+                $job->progress = 0;
+            }
+            
             $job->save();
-
+            
+    
             // Store the comment
             Jobcomment::create([
                 'job_id' => $job->id,
                 'content' => $request->input('comment'),
-                'user_id'=>1
+                'user_id' => 1
             ]);
-
+    
             return redirect()->back()->with('success', 'Progress updated successfully!');
         } catch (Exception $e) {
             Log::error('Failed to update progress: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Failed to update progress.');
         }
     }
+    
     public function updateStation(Request $request, $id)
     {
         try {

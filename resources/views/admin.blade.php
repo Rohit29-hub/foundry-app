@@ -12,6 +12,7 @@
             <thead>
                 <tr>
                     <th>Job Title</th>
+                    <th>Job Quantity</th>
                     <th>Due Date</th>
                 </tr>
             </thead>
@@ -28,6 +29,7 @@
                             </a>
                         </div>
                     </td>
+                    <td>{{$job->quantity}}</td>
                     <td>{{ $job->due_date ? $job->due_date->diffForHumans() : 'No due date' }}</td>
                 </tr>
 

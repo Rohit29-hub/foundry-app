@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('order_id')->index();
             $table->unsignedBigInteger('station_id');
             $table->integer('progress')->default(0);
+            $table->integer('quantity')->default(1);
             $table->timestamp('due_date')->nullable();
             $table->timestamps();
         });

@@ -481,13 +481,19 @@
                                     </div>
                                     <div class="grid gap-3" style="max-height:125px !important; overflow-y: scroll">
 
-                                        @foreach($station->jobs->sortByDesc('created_at') as $job)
+                                        @foreach($station->jobs as $job)
                                             <div class="flex items-center justify-between flex-wrap gap-2">
                                                 <div class="flex items-center gap-1.5">
                                                     <span class="badge badge-dot size-2" style="color:#FFF; background-color: #{{$job->client->color_code}}"></span>
-                                                    <a class="text-sm font-normal text-gray-900" href="/jobdetail/{{strtolower($job->title)}}">
-                                                        {{$job->title}}
-                                                    </a>
+                                                   @if(Auth::check() && Auth::user()->role === "manager{$station->id}")
+    <a class="text-sm font-normal text-gray-900" href="/manager/{{$station->id}}">
+        {{ $job->title }}
+    </a>
+    @else
+    <a class="text-sm font-normal text-gray-900" href="/jobdetail/{{ strtolower($job->title) }}">
+        {{ $job->title }}
+    </a>
+@endif
                                                 </div>
                                                 <div class="flex items-center text-sm font-medium text-gray-800 gap-1.5">
                                                     @if($job->progress)

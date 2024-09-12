@@ -48,8 +48,9 @@ class OrderController extends Controller
             Job::create([
                 'order_id' => $order->id,
                 'station_id' => $station->id, // Default station_id
-                'title' => $itemData['name'],
+                'title' => $request->order_number . ' - ' . $itemData['name'], // Concatenate order name with job title
                 'due_date' => $dueDate, // Calculated due date
+                'quantity' => $itemData['quantity'], // Include quantity in job
             ]);
         }
 
