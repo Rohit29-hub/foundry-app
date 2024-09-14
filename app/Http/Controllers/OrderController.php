@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 use App\Models\Order;
@@ -24,7 +25,8 @@ class OrderController extends Controller
         // Create a new order
         $order = Order::create([
             'order_number' => $request->order_number,
-            'client_id' => 1, // Assuming client_id is 1
+            'client_id' => 1,
+            'user_id' => Auth::id() // Assuming client_id is 1
         ]);
 
         // Fetch the station's time_duration (assuming station_id is 1)
@@ -60,7 +62,13 @@ class OrderController extends Controller
 
     public function index()
     {
-        $orders = Order::orderBy('created_at', 'desc')->get();
+        // Get the logged-in user's ID
+        $userId = Auth::id();
+    
+        // Retrieve orders only for the authenticated user
+        $orders = Order::where('user_id', $userId)->orderBy('created_at', 'desc')->get();
+    
         return view('orders', compact('orders'));
     }
+    
 }

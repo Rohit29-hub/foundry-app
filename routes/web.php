@@ -28,7 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/', function(){
         $stations = Station::with('jobs')->get();
         return view('welcome',compact(['stations']));
-    });
+    })->name('index');
     Route::view('/inventory', 'inventory');
     Route::view('/warehouse', 'warehouse');
     Route::get('/order', [OrderController::class, 'index'])->name('orders.index');

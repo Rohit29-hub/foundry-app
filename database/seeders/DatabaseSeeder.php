@@ -19,12 +19,35 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // User::factory(10)->create();
+        User::create([
+            'name' => 'User',
+            'email' => 'user@example.com',
+            'password'=>bcrypt('password'),
+        ]);
 
         User::create([
             'name' => 'Manager',
             'email' => 'manager@example.com',
             'password'=>bcrypt('password'),
             'role' => 'manager1'
+        ]);
+        User::create([
+            'name' => 'Manager',
+            'email' => 'manager2@example.com',
+            'password'=>bcrypt('password'),
+            'role' => 'manager2'
+        ]);
+        User::create([
+            'name' => 'Manager',
+            'email' => 'manager3@example.com',
+            'password'=>bcrypt('password'),
+            'role' => 'manager2'
+        ]);
+        User::create([
+            'name' => 'Manager',
+            'email' => 'manager4@example.com',
+            'password'=>bcrypt('password'),
+            'role' => 'manager4'
         ]);
 
         $ir = Client::create(['title'=>'Diodes','color_code'=>'F8285B']);
@@ -59,11 +82,11 @@ class DatabaseSeeder extends Seeder
         // $titagarh_order1 = $titagarh->orders()->create();
         // $jindal_order1 = $jindal->orders()->create();
 
-        $ir_order1 = Order::create(['order_number' => 'IR001', 'item_name' => 'IR Item 1', 'quantity' => 10 , 'client_id'=> $ir->id]);
-        $srbwipl_order1 = Order::create(['order_number' => 'SRB001', 'item_name' => 'SRB Item 1', 'quantity' => 15,'client_id'=> $srbwipl->id]);
-        $concor_order1 = Order::create(['order_number' => 'CON001', 'item_name' => 'CON Item 1', 'quantity' => 20,'client_id'=> $concor->id]);
-        $titagarh_order1 = Order::create(['order_number' => 'TIT001', 'item_name' => 'TIT Item 1', 'quantity' => 25,'client_id'=> $titagarh->id]);
-        $jindal_order1 = Order::create(['order_number' => 'JIN001', 'item_name' => 'JIN Item 1', 'quantity' => 30,'client_id'=> $jindal->id]);
+        $ir_order1 = Order::create(['order_number' => 'IR001', 'item_name' => 'IR Item 1', 'quantity' => 10 , 'client_id'=> $ir->id, 'user_id'=> 1]);
+        $srbwipl_order1 = Order::create(['order_number' => 'SRB001', 'item_name' => 'SRB Item 1', 'quantity' => 15,'client_id'=> $srbwipl->id, 'user_id'=> 1]);
+        $concor_order1 = Order::create(['order_number' => 'CON001', 'item_name' => 'CON Item 1', 'quantity' => 20,'client_id'=> $concor->id, 'user_id'=> 1]);
+        $titagarh_order1 = Order::create(['order_number' => 'TIT001', 'item_name' => 'TIT Item 1', 'quantity' => 25,'client_id'=> $titagarh->id, 'user_id'=> 1]);
+        $jindal_order1 = Order::create(['order_number' => 'JIN001', 'item_name' => 'JIN Item 1', 'quantity' => 30,'client_id'=> $jindal->id, 'user_id'=> 1]);
 
 
 

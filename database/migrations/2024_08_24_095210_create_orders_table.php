@@ -10,6 +10,7 @@ return new class extends Migration {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('client_id');
+            $table->unsignedBigInteger('user_id');
             $table->string('order_number')->nullable(); // Order Number field
             $table->string('item_name')->nullable();    // Order Name field
             $table->integer('quantity')->nullable();    // Quantity field

@@ -82,6 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let selectedButton = null;
     const jobId = @json($job->id); // Pass job ID from Blade to JavaScript
     const jobProgress = @json($job->progress); // Pass job progress from Blade to JavaScript
+    const totalItems = @json($job->quantity); // Assuming you have a total number of items for the job
 
     selectButton(document.getElementById('edit-progress-btn'));
     selectedButton = 'edit-progress';
@@ -115,10 +116,12 @@ document.addEventListener('DOMContentLoaded', function() {
         // Inject the appropriate form based on the selected button
         if (selectedButton === 'edit-progress') {
             formContainer.innerHTML = `
+                <span id="suggested-quantity" class="block text-center font-bold text-muted">You have completed ${calculateCompletedItems(jobProgress)} out of ${totalItems} items.</span>
                 <form id="update-progress-form" method="POST" action="{{ url('/manager/job/${jobId}/update-progress') }}">
                     @csrf
                     <div class="mb-3">
                         <label for="progress" class="form-label">Progress</label>
+
                         <div class="d-flex align-items-center gap-3">
                             <input 
                                 id="progress-slider" 
@@ -128,11 +131,10 @@ document.addEventListener('DOMContentLoaded', function() {
                                 max="100" 
                                 value="${jobProgress}" 
                                 class="form-range"
-                                onchange="updateProgressValue()"
+                                oninput="updateProgressValue()"
                                 style="flex: 1;"
                             >
                             <span id="progress-value" class="ms-2 fw-bold">${jobProgress}</span>
-                             <span id="suggested-quantity" class="ms-2 text-muted"></span>
                             <button type="submit" class="btn btn-success" id="update-progress-button">Update</button>
                         </div>
                     </div>
@@ -143,6 +145,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </form>
             `;
+
+            // Attach submit event listener immediately after form is rendered
+            attachFormSubmitListener();
         } else if (selectedButton === 'report-issue') {
             formContainer.innerHTML = `
                 <form method="POST" action="{{ url('/manager/job/${jobId}/report-issue') }}">
@@ -180,27 +185,36 @@ document.addEventListener('DOMContentLoaded', function() {
         button.classList.add('text-white');
     }
 
-   window.updateProgressValue = function() {
+    // Update progress value and calculate completed items
+    window.updateProgressValue = function() {
         const progressSlider = document.getElementById('progress-slider');
         const progressValue = document.getElementById('progress-value');
-        
+        const suggestedQuantity = document.getElementById('suggested-quantity');
 
-        // Prevent slider from moving below the jobProgress value
+        // Prevent slider from moving below the current jobProgress
         if (progressSlider && progressSlider.value < jobProgress) {
             progressSlider.value = jobProgress;
         }
 
         if (progressSlider && progressValue) {
             progressValue.textContent = progressSlider.value;
-        } else {
-            console.error('Progress slider or value span not found.');
         }
 
-        // Show confirmation if progress is set to 100%
+        // Update suggested completed items
+        if (suggestedQuantity) {
+            const completedItems = calculateCompletedItems(progressSlider.value);
+            suggestedQuantity.textContent = `You have completed ${completedItems} out of ${totalItems} items.`;
+        }
+    }
+
+    // Attach submit listener immediately after the form is rendered
+    function attachFormSubmitListener() {
         const form = document.getElementById('update-progress-form');
+        const progressSlider = document.getElementById('progress-slider');
+
         if (form) {
             form.addEventListener('submit', function(event) {
-                if (progressSlider.value == 100) {
+                if (progressSlider && progressSlider.value == 100) {
                     if (!confirm('You have marked the progress as 100%. Do you want to complete the job and move it to the next station?')) {
                         event.preventDefault(); // Prevent form submission if user cancels
                     }
@@ -208,7 +222,15 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     }
+
+    // Helper function to calculate completed items based on progress
+    function calculateCompletedItems(progress) {
+        const percentage = progress / 100;
+        return Math.round(percentage * totalItems); // Adjust `totalItems` as per your data
+    }
 });
+
 </script>
+
 
 @endsection
