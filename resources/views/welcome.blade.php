@@ -419,7 +419,7 @@
                                         </table>
                                     </div>
 
-
+        
                                 </div>
 
                             </div>
@@ -436,9 +436,7 @@
                                     background-image: url('assets/media/images/2600x1600/bg-3-dark.png');
                                 }
                             </style>
-
-
-
+                            
                             @foreach($stations as $station)
                                 <div class="card px-1 bg-[length:85%] [background-position:9rem_-2.5rem] bg-no-repeat channel-stats-bg">
                                 <div class="card-header">

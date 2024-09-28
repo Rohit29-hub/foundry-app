@@ -12,7 +12,6 @@ return new class extends Migration {
             $table->string('title');
             $table->timestamps();
             $table->float('time_duration', 8, 2);
-
         });
     }
 
